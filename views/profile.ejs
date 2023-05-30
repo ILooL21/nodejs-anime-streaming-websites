@@ -1,0 +1,87 @@
+<%- include ("layouts/header") %>
+
+<div class="container">
+  <div class="row my-4">
+    <div class="col-md-12">
+      <h1>Profile</h1>
+      <br />
+
+      <% if (error != "") { %>
+      <div class="alert alert-danger"><%- error %></div>
+      <% } %> <% if (message != "") { %>
+      <div class="alert alert-success"><%- message %></div>
+      <% } %>
+
+      <form
+        action="/upload_coverPhoto"
+        method="POST"
+        enctype="multipart/form-data">
+        <div class="form-group">
+          <input
+            class="form-control-file"
+            type="file"
+            name="coverPhoto"
+            accept="image/*"
+            style="display: none"
+            id="changeCoverPhoto" />
+          <img
+            src="../<%= user.coverPhoto %>"
+            class="img-fluid"
+            onclick="document.getElementById('changeCoverPhoto').click()"
+            onerror="this.src='https://i0.wp.com/www.lifewaycenters.com/wp-content/uploads/2016/06/placeholder-150x150-1.png?ssl=1'"
+            style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; cursor: pointer" />
+        </div>
+        <br />
+        <input
+          type="submit"
+          class="btn btn-secondary"
+          value="Upload" />
+        <br />
+        <br />
+      </form>
+
+      <form
+        action="/update_profile"
+        method="POST">
+        <div class="form-group">
+          <label>Name</label>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="<%= user.name %>"
+            name="name" />
+        </div>
+        <br />
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            class="form-control"
+            type="email"
+            placeholder="<%= user.email %>"
+            name="email"
+            disabled />
+        </div>
+        <br />
+
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            class="form-control"
+            type="password"
+            placeholder="New Password (Optional)"
+            name="password"
+            autocomplete="off" />
+        </div>
+        <br />
+
+        <input
+          type="submit"
+          class="btn btn-warning"
+          value="Update" />
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include ("layouts/footer") %>

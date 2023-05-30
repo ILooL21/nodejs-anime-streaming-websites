@@ -1,0 +1,53 @@
+<%- include ("layouts/header") %>
+<div
+  class="container-md my-4"
+  style="width: 60%">
+  <input
+    type="hidden"
+    id="videoId"
+    value="<%= video._id %>" />
+  <video
+    class="w-100"
+    controls
+    poster="<%= baseUrl + video.thumbnail %>"
+    src="<%= baseUrl + video.video %>"></video>
+  <div>
+    <div class="justify-content-center"><%- include ("like-dislike")%></div>
+    <% if (typeof isLogin !== "undefined" && isLogin){ %><% if (typeof isAdmin !== "undefined" && isAdmin){ %>
+    <div class="d-flex flex-row-reverse">
+      <a
+        href="/edit/<%= video._id %>"
+        class="btn">
+        <i class="fa fa-cog"></i>
+      </a>
+    </div>
+    <% }} %>
+  </div>
+</div>
+
+<div class="container-sm my-4">
+  <div class="row">
+    <div class="row">
+      <div class="col-lg-4">
+        <p class="mb-0">
+          <i class="fa fa-eye"></i>
+          <%= video.views %> views
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <h1 class="mt-4"><%= video.title %></h1>
+    </div>
+    <div class="row mt-4">
+      <p>Posted on <% var createdAt = new Date(video.createdAt); %><%= createdAt.getDate().toString().padStart(2, "0") + " " + months[createdAt.getMonth()] + ", " + createdAt.getFullYear() %></p>
+
+      <p class="lead">Description :</p>
+      <p><%= video.description %></p>
+
+      <%- include ("comments") %>
+    </div>
+  </div>
+</div>
+
+<%- include ("layouts/footer") %>

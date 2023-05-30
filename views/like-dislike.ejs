@@ -1,0 +1,75 @@
+<button
+  type="button"
+  class="btn btn-default"
+  onclick="doLike()">
+  <i class="fa fa-thumbs-up"></i>
+  <span id="likes"> <%= video.likers.length %> </span>
+</button>
+
+<button
+  type="button"
+  class="btn btn-default"
+  onclick="doDislike()">
+  <i class="fa fa-thumbs-down"></i>
+  <span id="dislikes"> <%= video.dislikers.length %> </span>
+</button>
+
+<script type="text/javascript">
+  function doLike() {
+    var ajax = new XMLHttpRequest();
+    ajax.open("POST", "/do-like", true);
+    ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        var data = JSON.parse(this.responseText);
+        if (data.status == "success") {
+          var likes = document.getElementById("likes").innerHTML;
+          likes = parseInt(likes);
+          likes++;
+          document.getElementById("likes").innerHTML = likes;
+          var dislikes = document.getElementById("dislikes").innerHTML;
+          dislikes = parseInt(dislikes);
+          if (dislikes != 0) {
+            dislikes--;
+          }
+          document.getElementById("dislikes").innerHTML = dislikes;
+        } else {
+          alert(data.message);
+        }
+      }
+    };
+
+    var videoId = document.getElementById("videoId").value;
+    ajax.send("videoId=" + videoId);
+  }
+
+  function doDislike() {
+    var ajax = new XMLHttpRequest();
+    ajax.open("POST", "/do-dislike", true);
+    ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    ajax.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        var data = JSON.parse(this.responseText);
+        if (data.status == "success") {
+          var dislikes = document.getElementById("dislikes").innerHTML;
+          dislikes = parseInt(dislikes);
+          dislikes++;
+          document.getElementById("dislikes").innerHTML = dislikes;
+          var likes = document.getElementById("likes").innerHTML;
+          likes = parseInt(likes);
+          if (likes != 0) {
+            likes--;
+          }
+          document.getElementById("likes").innerHTML = likes;
+        } else {
+          alert(data.message);
+        }
+      }
+    };
+
+    var videoId = document.getElementById("videoId").value;
+    ajax.send("videoId=" + videoId);
+  }
+</script>

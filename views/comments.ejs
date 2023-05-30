@@ -1,0 +1,111 @@
+<div class="mt-2">
+  <% video.comments.forEach(function(comment){ %>
+    <hr>
+  <div class="d-flex flex-row p-3">
+    <img
+      src="../<%= comment.user.coverPhoto %>"
+      onerror="this.src='https://i0.wp.com/www.lifewaycenters.com/wp-content/uploads/2016/06/placeholder-150x150-1.png?ssl=1'"
+      width="60"
+      height="60"
+      class="rounded-circle mr-3" />
+
+
+    <div class="w-100 ms-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex flex-row align-items-center">
+          <h5><%= comment.user.name %></h5>
+        </div>
+      </div>
+      
+
+      <p class="text-justify comment-text mb-0"><%= comment.comment %></p>
+      <div id="replies">
+        <% if (isLogin && comment.user.name == users.name){ %>
+          <div style="float: right; cursor: pointer;">    
+          <div onclick="createEditNode(this)" data-comment-id="<%= comment._id %>" data-video-id="<%= video._id %>">
+          Edit
+        </div>
+        <br>
+        <form action="/delete_comment/<%= comment._id %>" method="POST">
+          <input type="hidden" name="commentId" value="<%= comment._id %>">
+          <input type="hidden" name="videoId" value="<%= video._id %>">
+          <input type="hidden" name="comment" value="<%= comment.comment %>">
+          <input type="submit" class="btn btn-danger" value="Delete">
+        </form>
+        </div>
+          <% } %>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>
+   <% if(typeof isLogin !== 'undefined' && isLogin) { %>
+  <div class="card my-4">
+    <div class="card-header">Leave a Comment:</div>
+
+    <div class="card-body">
+      <form
+        onsubmit="return postComment(this)">
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            name="comment"
+            id="comments"></textarea>
+        </div>
+        <br />
+
+        <input
+          type="submit"
+          class="btn btn-primary"
+          value="Post" />
+      </form>
+    </div>
+  </div>
+  <% } %>
+
+
+  <script type="text/javascript">
+    function createEditNode(node) {
+      var commentId = node.getAttribute("data-comment-id");
+      var Idvideo = node.getAttribute("data-video-id");
+      var html = ""
+      html += '<div class="row">';
+      html += '<div class="col-md-12">';
+        html += '<form method="POST" action="/edit_comment/'+ Idvideo +'/'+ commentId +'" >';
+          html += '<div class="form-group">';
+            html += '<label>Edit Comment :</label>'
+            html += '<textarea class="form-control" name="edit" value="edit"></textarea>';
+          html += '</div>';
+          html += '<br>';
+          html += '<input type="submit" class="btn btn-primary" value="Post" />';
+        html += '</form>';
+      html += '</div>';
+      html += '</div>';
+
+      node.innerHTML = html;
+      node.removeAttribute("onclick");
+    }
+
+    function postComment(self) {
+      var ajax = new XMLHttpRequest();
+      ajax.open("POST", "/do-comments", true);
+      ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+      ajax.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var response = JSON.parse(this.responseText);
+
+          self.comment.value = "";
+          alert(response.message);
+        }
+      };
+
+      var videoId = document.getElementById("videoId").value;
+      ajax.send("videoId=" + videoId + "&comment=" + self.comment.value);
+
+      return false;
+    }
+    
+  </script>
+
+</div>

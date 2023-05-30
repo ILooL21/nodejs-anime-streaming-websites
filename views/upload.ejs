@@ -1,0 +1,66 @@
+<%- include ("layouts/header") %>
+
+<div class="container">
+  <div class="row my-4">
+    <div class="col-md-12">
+      <h1>Upload Video</h1>
+      <br />
+
+      <form
+        action="/upload-video"
+        method="POST"
+        enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Select Video</label>
+          <input
+            class="form-control-file"
+            type="file"
+            name="video"
+            accept="video/*"
+            required />
+        </div>
+        <br />
+
+        <div class="form-group">
+          <label>Select Thumbnail</label>
+          <input
+            class="form-control-file"
+            type="file"
+            name="thumbnail"
+            accept="image/*"
+            required />
+        </div>
+        <br />
+
+        <div class="form-group">
+          <label>Title</label>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Title"
+            name="title"
+            required />
+        </div>
+        <br />
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea
+            class="form-control"
+            placeholder="Description"
+            name="description"
+            required>
+          </textarea>
+        </div>
+        <br />
+
+        <input
+          type="submit"
+          class="btn btn-primary"
+          value="Upload" />
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include ("layouts/footer") %>

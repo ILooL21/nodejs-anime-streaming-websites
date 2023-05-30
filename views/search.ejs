@@ -1,0 +1,27 @@
+<%- include ("layouts/header") %>
+
+<div class="container my-4">
+  <h1>Search results: <%= query %></h1>
+  <div class="row text-center">
+    <% videos.forEach(function (video){%>
+
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <a href="/watch/<%= video._id %>">
+          <img
+            src="<%= video.thumbnail %>"
+            class="card-img-top"
+            style="height: 225px; object-fit: cover" />
+        </a>
+
+        <div class="card-body">
+          <h4 class="card-title"><%= video.title %></h4>
+          <p class="card-text"><%= video.description %></p>
+        </div>
+      </div>
+    </div>
+    <%})%>
+  </div>
+</div>
+
+<%- include ("layouts/footer") %>
